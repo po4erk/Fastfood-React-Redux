@@ -3,19 +3,19 @@ import { auth, googleProvider } from '../Firebase';
 export const GET_USER = 'get_user';
 export const USER_STATUS = 'user_status';
 export function getUser() {
-  return dispatch => {
+  return (dispatch) => {
     dispatch({
       type: USER_STATUS,
-      payload: true
+      payload: true,
     });
-    auth.onAuthStateChanged(user => {
+    auth.onAuthStateChanged((user) => {
       dispatch({
         type: GET_USER,
-        payload: user
+        payload: user,
       });
       dispatch({
         type: USER_STATUS,
-        payload: false
+        payload: false,
       });
     });
   };

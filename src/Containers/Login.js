@@ -14,7 +14,7 @@ class Login extends Component {
     this.state = {
       email: '',
       password: '',
-      error: ''
+      error: '',
     };
   }
 
@@ -23,7 +23,7 @@ class Login extends Component {
       this.props.history.push('/');
     }
   }
-  
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.user !== null) {
       nextProps.history.push('/');
@@ -33,28 +33,37 @@ class Login extends Component {
 
   submitLogin(event) {
     event.preventDefault();
-    this.props.login(this.state.email, this.state.password).catch(err => {
+    this.props.login(this.state.email, this.state.password).catch((err) => {
       this.setState({
-        error: err
+        error: err,
       });
     });
   }
 
   renderBody() {
     return (
-      <form onSubmit={event => { this.submitLogin(event);}}>
+      <form onSubmit={(event) => { this.submitLogin(event); }}>
         <div>
-          <InputLoginField id="email" type="text" label="Email"
-                      inputAction={(event) => this.setState({ email: event.target.value })}
-                      style={this.state.error ? errStyle : null}
+          <InputLoginField
+            id="email"
+            type="text"
+            label="Email"
+            inputAction={event => this.setState({ email: event.target.value })}
+            style={this.state.error ? errStyle : null}
           />
-          <InputLoginField id="password" type="password" label="Password"
-                      inputAction={(event) => this.setState({ password: event.target.value })}
-                      style={this.state.error ? errStyle : null}
+          <InputLoginField
+            id="password"
+            type="password"
+            label="Password"
+            inputAction={event => this.setState({ password: event.target.value })}
+            style={this.state.error ? errStyle : null}
           />
           {this.state.error && <ErrorAlert>Your username/password is incorrect</ErrorAlert>}
-          <FormButton submitLabel="Sign in" otherLabel="Create Account"
-                            goToLink="/CreateAccount" {...this.props}
+          <FormButton
+            submitLabel="Sign in"
+            otherLabel="Create Account"
+            goToLink="/CreateAccount"
+            {...this.props}
           />
           <SocialMediaLogin {...this.props} />
         </div>
@@ -65,7 +74,7 @@ class Login extends Component {
   render() {
     return (
       <div>
-        <SimpleBox title="Sign in" body={this.renderBody()}/>
+        <SimpleBox title="Sign in" body={this.renderBody()} />
       </div>
     );
   }

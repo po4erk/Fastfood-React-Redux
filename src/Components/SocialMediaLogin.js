@@ -6,7 +6,7 @@ const SocialMediaLogin = (props) => {
   return (
     <div className="d-flex justify-content-between mt-1">
       <button type="button" className="btn btn-social btn-google" onClick={googleLogin}>
-        <span className="fa fa-google"/> Sign in with Google
+        <span className="fa fa-google" /> Sign in with Google
       </button>
     </div>
   );

@@ -1,5 +1,5 @@
 export const errStyle = {
-  borderColor: 'red'
+  borderColor: 'red',
 };
 
-export const required = value => value ? undefined : 'Required';
+export const required = value => (value ? undefined : 'Required');

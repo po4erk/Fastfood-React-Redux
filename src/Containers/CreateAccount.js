@@ -14,7 +14,7 @@ class CreateAccount extends Component {
       email: '',
       password: '',
       confirmPassword: '',
-      error: ''
+      error: '',
     };
   }
 
@@ -23,14 +23,14 @@ class CreateAccount extends Component {
 
     if (email === '' || password === '' || confirmPassword === '') {
       this.setState({
-        error: 'Please enter in all fields'
+        error: 'Please enter in all fields',
       });
       return false;
     }
 
     if (password !== confirmPassword) {
       this.setState({
-        error: 'Please make sure your passwords match'
+        error: 'Please make sure your passwords match',
       });
       return false;
     }
@@ -45,9 +45,9 @@ class CreateAccount extends Component {
     }
     this.props.createAccount(this.state.email, this.state.password).then(() => {
       this.props.history.replace('/');
-    }).catch(err => {
+    }).catch((err) => {
       this.setState({
-        error: err.message
+        error: err.message,
       });
     });
   }
@@ -55,20 +55,32 @@ class CreateAccount extends Component {
   renderBody() {
     return (
       <div>
-        <form onSubmit={(event) => this.submitAccount(event)}>
-          <InputLoginField id="email" type="text" label="Email"
-                      inputAction={(event) => this.setState({ email: event.target.value })}
-                      style={this.state.error ? errStyle : null }/>
-          <InputLoginField id="password" type="password" label="Password"
-                      inputAction={(event) => this.setState({ password: event.target.value })}
-                      style={this.state.error ? errStyle : null }/>
-          <InputLoginField id="confirm-password" type="password" label="Confirm Password"
-                      inputAction={(event) => this.setState({ confirmPassword: event.target.value })}
-                      style={this.state.error ? errStyle : null }/>
+        <form onSubmit={event => this.submitAccount(event)}>
+          <InputLoginField
+            id="email"
+            type="text"
+            label="Email"
+            inputAction={event => this.setState({ email: event.target.value })}
+            style={this.state.error ? errStyle : null}
+          />
+          <InputLoginField
+            id="password"
+            type="password"
+            label="Password"
+            inputAction={event => this.setState({ password: event.target.value })}
+            style={this.state.error ? errStyle : null}
+          />
+          <InputLoginField
+            id="confirm-password"
+            type="password"
+            label="Confirm Password"
+            inputAction={event => this.setState({ confirmPassword: event.target.value })}
+            style={this.state.error ? errStyle : null}
+          />
           {this.state.error && <ErrorAlert>
             {this.state.error}
           </ErrorAlert>}
-          <FormButton submitLabel="Create Account" otherLabel="Go back" goToLink="/Login" {...this.props}/>
+          <FormButton submitLabel="Create Account" otherLabel="Go back" goToLink="/Login" {...this.props} />
         </form>
       </div>
     );
@@ -76,7 +88,7 @@ class CreateAccount extends Component {
 
   render() {
     return (
-      <SimpleBox body={this.renderBody()} title="Create Account"/>
+      <SimpleBox body={this.renderBody()} title="Create Account" />
     );
   }
 }

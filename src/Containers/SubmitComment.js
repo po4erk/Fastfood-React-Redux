@@ -5,13 +5,12 @@ import { errStyle, required } from '../Helpers/ReduxFormValidation';
 import { saveComment } from '../Actions/PlaceActions';
 
 class SubmitComment extends Component {
-
   commentName(field) {
     const { meta: touched, error } = field;
     return (
       <div>
         <h3>Name:</h3>
-        <input type="text" placeholder="Enter your name:" className="form-control" style={touched && error ? errStyle : null } {...field.input} />
+        <input type="text" placeholder="Enter your name:" className="form-control" style={touched && error ? errStyle : null} {...field.input} />
       </div>
     );
   }
@@ -20,7 +19,7 @@ class SubmitComment extends Component {
     return (
       <div>
         <h3>Comment:</h3>
-        <textarea className="form-control" placeholder="Enter your comment about this place:" style={touched && error ? errStyle : null } {...field.input} />
+        <textarea className="form-control" placeholder="Enter your comment about this place:" style={touched && error ? errStyle : null} {...field.input} />
       </div>
     );
   }
@@ -29,13 +28,22 @@ class SubmitComment extends Component {
     return (
       <div>
         <h3>Rating:</h3>
-        <input type="text" className="form-control" style={touched && error ? errStyle : null } {...field.input} />
+        <select className="form-control" style={touched && error ? errStyle : null} {...field.input} >
+          <option>Choose rating</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+        </select>
       </div>
     );
   }
 
   onSubmit(values) {
-    const { saveComment, id, uid, dispatch } = this.props;
+    const {
+      saveComment, id, uid, dispatch
+    } = this.props;
     saveComment(id, values, uid).then(() => {
       dispatch(reset('SubmitCommentForm'));
     });
@@ -71,7 +79,5 @@ function mapStateToProps(state, ownProps) {
 }
 
 export default reduxForm({
-  form: 'SubmitCommentForm'
-})(
-  connect(mapStateToProps, { saveComment })(SubmitComment)
-);
+  form: 'SubmitCommentForm',
+})(connect(mapStateToProps, { saveComment })(SubmitComment));

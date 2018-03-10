@@ -8,35 +8,34 @@ import Loading from '../Components/Loading';
 class LoadingComponent extends Component {
   componentWillMount() {
     const { userLoading, placesLoading } = this.props;
-    if(userLoading === undefined) {
+    if (userLoading === undefined) {
       this.props.getUser();
     }
 
-    if(placesLoading === undefined) {
+    if (placesLoading === undefined) {
       this.props.getPlaces();
     }
   }
-  
+
   componentWillReceiveProps(nextProps) {
-    if(nextProps.placesLoading === -1 && nextProps.user !== null) {
+    if (nextProps.placesLoading === -1 && nextProps.user !== null) {
       this.props.getPlaces();
     }
   }
 
   render() {
     const { userLoading, placesLoading, children } = this.props;
-    if((!userLoading && !placesLoading) || (this.props.user === null)) {
+    if ((!userLoading && !placesLoading) || (this.props.user === null)) {
       return (
         <div>
           {children}
         </div>
-      )
+      );
     }
-    else {
-      return (
-        <Loading />
-      )
-    }
+
+    return (
+      <Loading />
+    );
   }
 }
 
@@ -44,8 +43,8 @@ function mapStateToProps(state) {
   return {
     userLoading: state.loading.user,
     placesLoading: state.loading.places,
-    user: state.user
+    user: state.user,
   };
 }
 
-export default withRouter(connect(mapStateToProps, { getUser, getPlaces })(LoadingComponent))
+export default withRouter(connect(mapStateToProps, { getUser, getPlaces })(LoadingComponent));

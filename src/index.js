@@ -12,24 +12,28 @@ import CreateAccount from './Containers/CreateAccount';
 import LoadingComponent from './Containers/LoadingComponent';
 import AuthenticatedComponent from './Containers/AuthenticatedComponent';
 import PlaceDetail from './Containers/PlaceDetail';
-const store = createStore(reducers,
+
+const store = createStore(
+  reducers,
   window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-  applyMiddleware(thunk));
+  applyMiddleware(thunk),
+);
 
 ReactDOM.render(
   <Provider store={store}>
     <BrowserRouter>
       <LoadingComponent>
         <Switch>
-          <Route path="/CreateAccount" component={CreateAccount}/>
-          <Route path="/Login" component={Login}/>
+          <Route path="/CreateAccount" component={CreateAccount} />
+          <Route path="/Login" component={Login} />
           <AuthenticatedComponent>
-            <Route path="/:id" component={PlaceDetail}/>
-            <Route exact path="/" component={ListPlaces}/>
+            <Route path="/:id" component={PlaceDetail} />
+            <Route exact path="/" component={ListPlaces} />
           </AuthenticatedComponent>
         </Switch>
       </LoadingComponent>
     </BrowserRouter>
   </Provider>,
-  document.getElementById('root'));
+  document.getElementById('root'),
+);
 registerServiceWorker();

@@ -8,6 +8,6 @@ export default class PlaceCard extends Component {
           {this.props.children}
         </div>
       </div>
-    )
+    );
   }
 }

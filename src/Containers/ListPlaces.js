@@ -8,32 +8,38 @@ import { getUser, logout } from '../Actions/UserActions';
 import Link from 'react-router-dom/es/Link';
 
 class App extends Component {
+  getRating(place) {
+    const count = _.size(place.comments);
+
+    return count ?
+      Math.round(_.reduce(place.comments, (acc, value) => acc + +value.rating, 0) / count) :
+      '-';
+  }
+
   renderPlaces() {
-    return _.map(this.props.places, (place, key) => {
-      return (
-        <PlaceCard key={key}>
-          <h3 className="card-title">
-            {place.name}
-          </h3>
-          <p className="card-text">
-            {place.address}
-          </p>
-          <p className="card-text">
-            <strong>Rating: {place.rating} </strong>
-          </p>
-          {/* {place.uid === this.props.user.uid && */}
-          <button className="btn btn-danger float-right" onClick={() => this.props.deletePlace(key)}>Delete</button>
-          <Link to={`/${key}`}>
-            <button className="btn btn-info float-right">Show More</button>
-          </Link>  
-        </PlaceCard>
-      );
-    });
+    return _.map(this.props.places, (place, key) => (
+      <PlaceCard key={key}>
+        <h3 className="card-title">
+          {place.name}
+        </h3>
+        <p className="card-text">
+          {place.address}
+        </p>
+        <p className="card-text">
+          <strong>Rating: {this.getRating(place)} </strong>
+        </p>
+        {/* {place.uid === this.props.user.uid && */}
+        <button className="btn btn-danger float-right" onClick={() => this.props.deletePlace(key)}>Delete</button>
+        <Link to={`/${key}`}>
+          <button className="btn btn-info float-right">Show More</button>
+        </Link>
+      </PlaceCard>
+    ));
   }
 
   renderField(field) {
     return (
-      <input type="text" placeholder={`Enter a ${field.label}...`} {...field.input} className={field.class}/>
+      <input type="text" placeholder={`Enter a ${field.label}...`} {...field.input} className={field.class} />
     );
   }
 
@@ -46,7 +52,7 @@ class App extends Component {
     return (
       <div>
         <div className="navbar">
-          <button className="btn btn-danger" onClick={() => {this.props.logout();}}>Sign out</button>
+          <button className="btn btn-danger" onClick={() => { this.props.logout(); }}>Sign out</button>
         </div>
 
         <div className="container">
@@ -76,12 +82,13 @@ class App extends Component {
   }
 }
 
-let form = reduxForm({
-  form: 'NewPlace'
+const form = reduxForm({
+  form: 'NewPlace',
 })(App);
 
 export default connect((state, ownProps) => ({
   places: state.places,
-  user: state.user
-}), { addPlace, getPlaces, deletePlace, getUser, logout }
-)(form);
+  user: state.user,
+}), {
+  addPlace, getPlaces, deletePlace, getUser, logout,
+})(form);

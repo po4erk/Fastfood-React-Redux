@@ -5,49 +5,68 @@ import PlaceCard from '../Components/PlaceCard';
 import SubmitComment from './SubmitComment';
 import _ from 'lodash';
 import Comment from '../Components/Comment';
-import { deleteComment, storageUpload, storageDownload } from '../Actions/PlaceActions';
+import { deleteComment, updatePlace } from '../Actions/PlaceActions';
+import { storage } from '../Firebase';
 
 class PlaceDetail extends Component {
-  componentDidMount(){
+  constructor(props) {
+    super(props);
+
+    const { place } = this.props;
+    this.state = {
+      imageUrl: null,
+      nameEditorValue: place.name,
+      showNameEditor: false,
+      showAddressEditor: false,
+      showInfoEditor: false
+    };
+  }
+
+  setImageUrl() {
     const { match } = this.props;
     const placeId = match.params.id;
-    this.props.storageDownload(placeId);
+    
+    storage.ref(placeId).getDownloadURL()
+      .then(url => this.setState({
+        imageUrl: url
+      }));
+  }
+
+  componentDidMount() {
+    this.setImageUrl();
   }
 
   renderComments() {
     const { place, match } = this.props;
     const placeId = match.params.id;
-    return _.map(place.comments, (comment, key) => {
-      return (
-        <Comment key={key} id={key}>
-          <h3>{comment.name}</h3>
-          <p>{comment.comment}</p>
-          <strong>Rating: {comment.rating}</strong>
-          <button className="btn btn-danger float-right" onClick={() => this.props.deleteComment(placeId,key)}>Delete</button>
-        </Comment>
-      );
-    });
+    return _.map(place.comments, (comment, key) => (
+      <Comment key={key} id={key}>
+        <h3>{comment.name}</h3>
+        <p>{comment.comment}</p>
+        <strong>Rating: {comment.rating}</strong>
+        <button className="btn btn-danger float-right" onClick={() => this.props.deleteComment(placeId, key)}>Delete</button>
+      </Comment>
+    ));
   }
 
-  uploadImage(event){
+  uploadImage(event) {
     const { match } = this.props;
     const placeId = match.params.id;
-    let file = event.target.files[0];
-    this.props.storageUpload(placeId,file).then(() => {
-      this.props.storageDownload(placeId);
-    });
+    const file = event.target.files[0];
+
+    storage.ref(placeId).put(file).then(() => this.setImageUrl());
   }
 
   render() {
     const { place, match } = this.props;
-    let imgStyle = {
+    const imgStyle = {
       width: '350px',
-      height: '350px'
-    }
+      height: '350px',
+    };
     return (
       <div>
         <div className="navbar">
-          <Link to={'/'} className="btn btn-primary">
+          <Link to="/" className="btn btn-primary">
             Go home
           </Link>
         </div>
@@ -55,29 +74,52 @@ class PlaceDetail extends Component {
           <div className="row">
             <div className="col-sm-7">
               <PlaceCard>
-                <h1 className="post-title">{place.name}</h1>
+                {(
+                  this.state.showNameEditor ?
+                    <div>
+                      <input
+                        className="form-control" 
+                        type="text" 
+                        value={this.state.nameEditorValue} 
+                        onChange={(event) => this.setState({ nameEditorValue: event.target.value })} />
+                      <button className="btn btn-success" onClick={() => {
+                        this.props.updatePlace(match.params.id, { name: this.state.nameEditorValue });
+                        this.setState({
+                          showNameEditor: false
+                        })
+                      }}>Save</button>
+                      <button className="btn btn-danger" onClick={() => this.setState({ showNameEditor: false })}>Cancel</button>
+                    </div> :
+                    <h1 className="post-title" onClick={() => this.setState({ showNameEditor: true })}>{place.name}</h1>
+                )}
                 <p className="post-body">{place.address}</p>
                 <div className="row">
                   <div className="col-sm-6">
-                    <img alt="" src="" id="image" style={imgStyle}/>
+                    <img alt="" src={this.state.imageUrl} id="image" style={imgStyle} />
                     <div className="form-group row">
-                        <input type="file" 
-                              className="form-control"
-                              onChange={(event) => {this.uploadImage(event)}} />
+                      <input
+                        type="file"
+                        className="form-control"
+                        onChange={(event) => { this.uploadImage(event); }}
+                      />
                     </div>
                   </div>
                   <div className="col-sm-6">
                     <div className="post-body">
-                    <h4>Information about this place:</h4>
-                    {place.info}
+                      <h4>Information about this place:</h4>
+                      {place.info}
                     </div>
                   </div>
                 </div>
               </PlaceCard>
+
+
+
+
             </div>
             <div className="col-sm-5">
               <PlaceCard>
-                <SubmitComment id={match.params.id}/>
+                <SubmitComment id={match.params.id} />
               </PlaceCard>
               <PlaceCard>
                 {this.renderComments()}
@@ -91,7 +133,7 @@ class PlaceDetail extends Component {
 }
 
 function mapStateToProps(state, ownProps) {
-  return { place: state.places[ownProps.match.params.id], uid: state.user.uid };
+  return { place: state.places[ownProps.match.params.id] };
 }
 
-export default connect(mapStateToProps,{deleteComment,storageUpload,storageDownload})(PlaceDetail);
+export default connect(mapStateToProps, { deleteComment, updatePlace })(PlaceDetail);
