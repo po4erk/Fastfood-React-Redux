@@ -1,22 +1,34 @@
-.footer-title {
-  height: 100% !important;
-  width: 15% !important;
-  padding: 1rem 1rem !important;
+.header-title {
+  height: 40px ;
+  width: 30% ;
+  padding: 1rem 1rem ;
+  margin-right: 5px;
+  margin-left: 5px;
 }
 
-.footer-button {
-  height: 100% !important;
-  width: 10% !important;
-  padding: 1rem 1rem !important;
-  border-radius: 0;
+.header-button {
+  margin-left: 5px;
+  height: 43px;
+  width: 17%;
+  border-radius: 5px;
   background-color: #2D7DD2;
   color: whitesmoke;
 }
 
-.footer-body {
-  height: 100% !important;
-  width: 75% !important;
-  padding: 1rem 1rem !important;
+.header-body {
+  height: 40px ;
+  width: 50% ;
+  padding: 1rem 1rem ;
+  margin-right: 5px;
+}
+
+.headerForm{
+  width: 70%;
+  margin: auto;
+  margin-top: -55px;
+  background: #fff;
+  border-radius: 5px;
+  padding: 2px;
 }
 
 .post {
@@ -34,4 +46,49 @@ body {
 
 .loading {
   color: white;
+}
+
+.textarea{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  height: 150px;  
+}
+
+button{
+  cursor: pointer;
+}
+
+.inputName{
+  width: 300px;
+}
+
+.commentText{
+  word-wrap: break-word;
+}
+
+.showMore{
+  margin-right: 5px;
+}
+
+.signOut{
+  margin-top: 15px; 
+  height: 45px;
+}
+
+.inputDetail{
+  width: 80%;
+}
+
+.buttonDetail{
+  margin-top: 5px;
+  margin-right: 5px;
+}
+
+.textareDetails{
+  height: 347px;
+}
+
+.addressDetail{
+  position: relative;
+  z-index: 9999;
 }

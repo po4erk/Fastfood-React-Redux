@@ -12,12 +12,16 @@ class App extends Component {
     const count = _.size(place.comments);
     return count ?
       Math.round(_.reduce(place.comments, (acc, value) => acc + +value.rating, 0) / count) :
-      '-';
+      'Any rating';
   }
 
   renderPlaces() {
     return _.map(this.props.places, (place, key) => (
       <PlaceCard key={key}>
+        <button className="btn btn-danger float-right" onClick={() => this.props.deletePlace(key)}>Delete</button>
+        <Link to={`/${key}`}>
+          <button className="btn btn-info float-right showMore">Show More</button>
+        </Link>
         <h3 className="card-title">
           {place.name}
         </h3>
@@ -28,10 +32,7 @@ class App extends Component {
           <strong>Rating: {this.getRating(place)} </strong>
         </p>
         {/* {place.uid === this.props.user.uid && */}
-        <button className="btn btn-danger float-right" onClick={() => this.props.deletePlace(key)}>Delete</button>
-        <Link to={`/${key}`}>
-          <button className="btn btn-info float-right">Show More</button>
-        </Link>
+        
       </PlaceCard>
     ));
   }
@@ -50,30 +51,28 @@ class App extends Component {
     const { handleSubmit } = this.props;
     return (
       <div>
-        <div className="navbar">
-          <button className="btn btn-danger" onClick={() => { this.props.logout(); }}>Sign out</button>
-        </div>
-
+        <div className="navbar"></div>
         <div className="container">
-          <div className="main">
-            {this.renderPlaces()}
-          </div>
-          <div className="navbar fixed-bottom">
-            <form onSubmit={handleSubmit(this.onSubmit.bind(this))} className="footerForm">
+          <button className="btn btn-danger signOut" onClick={() => { this.props.logout(); }}>Sign out</button>
+          <div className="navbar">
+            <form onSubmit={handleSubmit(this.onSubmit.bind(this))} className="headerForm">
               <Field
                 name="name"
                 component={this.renderField}
                 label="Name"
-                class="footer-title"
+                class="header-title"
               />
               <Field
                 name="address"
                 component={this.renderField}
                 label="Address"
-                class="footer-body"
+                class="header-body"
               />
-              <button type="submit" className="btn footer-button">Add New</button>
+              <button type="submit" className="btn header-button btn-info">Add New</button>
             </form>
+          </div>
+          <div className="main">
+            {this.renderPlaces()}
           </div>
         </div>
       </div>

@@ -9,7 +9,7 @@ export default class SimpleBox extends Component {
           <div className="card col-sm-6">
             <div className="card-block">
               <div className="card-title text-center">
-                {title}
+                <strong>{title}</strong>
               </div>
               <div className="card-body">
                 {body}

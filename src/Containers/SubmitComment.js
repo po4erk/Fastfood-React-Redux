@@ -9,8 +9,7 @@ class SubmitComment extends Component {
     const { meta: touched, error } = field;
     return (
       <div>
-        <h3>Name:</h3>
-        <input type="text" placeholder="Enter your name:" className="form-control" style={touched && error ? errStyle : null} {...field.input} />
+        <input type="text" placeholder="Enter your name:" className="form-control inputName" style={touched && error ? errStyle : null} {...field.input} />
       </div>
     );
   }
@@ -18,16 +17,14 @@ class SubmitComment extends Component {
     const { meta: touched, error } = field;
     return (
       <div>
-        <h3>Comment:</h3>
-        <textarea className="form-control" placeholder="Enter your comment about this place:" style={touched && error ? errStyle : null} {...field.input} />
+        <textarea className="form-control textarea" placeholder="Enter your comment about this place:" style={touched && error ? errStyle : null} {...field.input} />
       </div>
     );
   }
   commentRating(field) {
     const { meta: touched, error } = field;
     return (
-      <div>
-        <h3>Rating:</h3>
+      <div className="float-right">
         <select className="form-control" style={touched && error ? errStyle : null} {...field.input} >
           <option>Choose rating</option>
           <option value="1">1</option>
@@ -53,6 +50,12 @@ class SubmitComment extends Component {
     const { handleSubmit } = this.props;
     return (
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+        <h3>Your comments</h3>
+        <Field
+          name="rating"
+          component={this.commentRating}
+          validate={required}
+        />
         <Field
           name="name"
           component={this.commentName}
@@ -63,12 +66,7 @@ class SubmitComment extends Component {
           component={this.commentArea}
           validate={required}
         />
-        <Field
-          name="rating"
-          component={this.commentRating}
-          validate={required}
-        />
-        <button type="submit" className="btn btn-success btn-small mt-1">Send</button>
+        <button type="submit" className="btn btn-info btn-small mt-1">Send</button>
       </form>
     );
   }

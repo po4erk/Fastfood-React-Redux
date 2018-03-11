@@ -26,7 +26,7 @@ class PlaceDetail extends Component {
       showInfoEditor: false,
       latlng: {}
     };
-    this.onChange = (addressEditorValue) => this.setState({ addressEditorValue });;
+    this.onChange = (addressEditorValue) => this.setState({ addressEditorValue });
   }
 
   
@@ -52,7 +52,7 @@ class PlaceDetail extends Component {
     return _.map(place.comments, (comment, key) => (
       <Comment key={key} id={key}>
         <h3>{comment.name}</h3>
-        <p>{comment.comment}</p>
+        <p className="commentText">{comment.comment}</p>
         <strong>Rating: {comment.rating}</strong>
         <button className="btn btn-danger float-right" onClick={() => this.props.deleteComment(placeId, key)}>Delete</button>
       </Comment>
@@ -72,20 +72,21 @@ class PlaceDetail extends Component {
     return(
       <div>
         <input
-          className="form-control" 
+          className="form-control inputDetail" 
           type="text" 
           value={this.state.nameEditorValue} 
           onChange={(event) => this.setState({ nameEditorValue: event.target.value })} />
-        <button className="btn btn-success" onClick={() => {
+        <button className="btn btn-success buttonDetail" onClick={() => {
           this.props.updatePlace(match.params.id, { name: this.state.nameEditorValue });
           this.setState({
             showNameEditor: false
           })
         }}>Save</button>
-        <button className="btn btn-danger" onClick={() => this.setState({ showNameEditor: false })}>Cancel</button>
+        <button className="btn btn-danger buttonDetail" onClick={() => this.setState({ showNameEditor: false })}>Cancel</button>
       </div>
     )
   }
+
   addressChanged(){
     const { match } = this.props;
     const inputProps = {
@@ -93,36 +94,36 @@ class PlaceDetail extends Component {
       onChange: this.onChange,
     }
     return(
-      <div>
-          <PlacesAutocomplete inputProps={inputProps} />
-          <button type='button' className="btn btn-success" onClick={() => {
-            this.props.updatePlace(match.params.id, { address: this.state.addressEditorValue });
-            this.handleFormSubmit();
+      <div className="addressDetail">
+          <PlacesAutocomplete inputProps={inputProps}/>
+          <button type='button' className="btn btn-success buttonDetail" onClick={() => {
+            this.props.updatePlace(match.params.id, { address: this.state.addressEditorValue })
+            .then(() => this.handleFormSubmit());
             this.setState({
               showAddressEditor: false
             });
-            
           }}>Save</button>
-        <button className="btn btn-danger" onClick={() => this.setState({ showAddressEditor: false })}>Cancel</button>
+        <button className="btn btn-danger buttonDetail" onClick={() => this.setState({ showAddressEditor: false })}>Cancel</button>
       </div>
     )
   }
+
   infoChanged(){
     const { match } = this.props;
     return(
       <div>
         <textarea
-          className="form-control"
-          type="text" 
-          value={this.state.infoEditorValue} 
+          className="form-control textareDetails"
+          type="text"
+          placeholder = "Enter new info:"
           onChange={(event) => this.setState({ infoEditorValue: event.target.value })} />
-        <button className="btn btn-success" onClick={() => {
+        <button className="btn btn-success buttonDetail" onClick={() => {
           this.props.updatePlace(match.params.id, { info: this.state.infoEditorValue });
           this.setState({
             showInfoEditor: false
           })
         }}>Save</button>
-        <button className="btn btn-danger" onClick={() => this.setState({ showInfoEditor: false })}>Cancel</button>
+        <button className="btn btn-danger buttonDetail" onClick={() => this.setState({ showInfoEditor: false })}>Cancel</button>
       </div>
     )
   }
@@ -137,13 +138,8 @@ class PlaceDetail extends Component {
   render() {
     const { place, match } = this.props;
     const MapWithAMarker = withGoogleMap(props =>
-      <GoogleMap
-        defaultZoom={15}
-        defaultCenter={this.state.latlng}
-      >
-        <Marker
-          position={this.state.latlng}
-        />
+      <GoogleMap defaultZoom={15} defaultCenter={this.state.latlng}>
+        <Marker position={this.state.latlng} />
       </GoogleMap>
     );
     const imgStyle = {
@@ -153,15 +149,13 @@ class PlaceDetail extends Component {
     };
     return (
       <div>
-        <div className="navbar">
-          <Link to="/" className="btn btn-primary">
-            Go home
-          </Link>
-        </div>
         <div className="container-fluid">
           <div className="row">
             <div className="col-sm-7">
               <PlaceCard>
+              <Link to="/" className="btn btn-primary float-right">
+                Go home
+              </Link>
                 {(
                   this.state.showNameEditor ? 
                   this.nameChanged() : 
@@ -190,12 +184,12 @@ class PlaceDetail extends Component {
                     </div>
                   </div>
                   <div className="col-sm-6">
-                  <h4>Information about this place:</h4>
                   {(
                     this.state.showInfoEditor ? 
                     this.infoChanged() : 
                     <div className="post-body" onClick={() => 
                       this.setState({showInfoEditor: true })}>
+                      <h4>Information about this place:</h4>
                         {place.info}
                     </div>
                   )}
@@ -206,8 +200,6 @@ class PlaceDetail extends Component {
                 containerElement={<div style={{ height: `400px` }} />}
                 mapElement={<div style={{ height: `100%` }} />}
               />
-
-
             </div>
             <div className="col-sm-5">
               <PlaceCard>
