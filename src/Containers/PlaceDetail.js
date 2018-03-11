@@ -97,10 +97,11 @@ class PlaceDetail extends Component {
           <PlacesAutocomplete inputProps={inputProps} />
           <button type='button' className="btn btn-success" onClick={() => {
             this.props.updatePlace(match.params.id, { address: this.state.addressEditorValue });
+            this.handleFormSubmit();
             this.setState({
               showAddressEditor: false
             });
-            this.handleFormSubmit();
+            
           }}>Save</button>
         <button className="btn btn-danger" onClick={() => this.setState({ showAddressEditor: false })}>Cancel</button>
       </div>
