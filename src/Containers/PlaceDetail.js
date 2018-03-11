@@ -7,6 +7,9 @@ import _ from 'lodash';
 import Comment from '../Components/Comment';
 import { deleteComment, updatePlace } from '../Actions/PlaceActions';
 import { storage } from '../Firebase';
+import PlacesAutocomplete, { geocodeByAddress, getLatLng } from 'react-places-autocomplete';
+import {withGoogleMap,GoogleMap,Marker} from "react-google-maps";
+
 
 class PlaceDetail extends Component {
   constructor(props) {
@@ -16,11 +19,17 @@ class PlaceDetail extends Component {
     this.state = {
       imageUrl: null,
       nameEditorValue: place.name,
+      infoEditorValue: place.info,
+      addressEditorValue: place.address,
       showNameEditor: false,
       showAddressEditor: false,
-      showInfoEditor: false
+      showInfoEditor: false,
+      latlng: {}
     };
+    this.onChange = (addressEditorValue) => this.setState({ addressEditorValue });;
   }
+
+  
 
   setImageUrl() {
     const { match } = this.props;
@@ -34,8 +43,9 @@ class PlaceDetail extends Component {
 
   componentDidMount() {
     this.setImageUrl();
+    this.handleFormSubmit();
   }
-
+ 
   renderComments() {
     const { place, match } = this.props;
     const placeId = match.params.id;
@@ -49,19 +59,96 @@ class PlaceDetail extends Component {
     ));
   }
 
+  handleFormSubmit = () => {
+    const { place } = this.props;
+    geocodeByAddress(place.address)
+      .then(results => getLatLng(results[0]))
+      .then(LatLng => this.setState({latlng: LatLng}))
+      .catch(error => console.error('Error', error))
+  }
+
+  nameChanged(){
+    const { match } = this.props;
+    return(
+      <div>
+        <input
+          className="form-control" 
+          type="text" 
+          value={this.state.nameEditorValue} 
+          onChange={(event) => this.setState({ nameEditorValue: event.target.value })} />
+        <button className="btn btn-success" onClick={() => {
+          this.props.updatePlace(match.params.id, { name: this.state.nameEditorValue });
+          this.setState({
+            showNameEditor: false
+          })
+        }}>Save</button>
+        <button className="btn btn-danger" onClick={() => this.setState({ showNameEditor: false })}>Cancel</button>
+      </div>
+    )
+  }
+  addressChanged(){
+    const { match } = this.props;
+    const inputProps = {
+      value: this.state.addressEditorValue,
+      onChange: this.onChange,
+    }
+    return(
+      <div>
+          <PlacesAutocomplete inputProps={inputProps} />
+          <button type='button' className="btn btn-success" onClick={() => {
+            this.props.updatePlace(match.params.id, { address: this.state.addressEditorValue });
+            this.setState({
+              showAddressEditor: false
+            });
+            this.handleFormSubmit();
+          }}>Save</button>
+        <button className="btn btn-danger" onClick={() => this.setState({ showAddressEditor: false })}>Cancel</button>
+      </div>
+    )
+  }
+  infoChanged(){
+    const { match } = this.props;
+    return(
+      <div>
+        <textarea
+          className="form-control"
+          type="text" 
+          value={this.state.infoEditorValue} 
+          onChange={(event) => this.setState({ infoEditorValue: event.target.value })} />
+        <button className="btn btn-success" onClick={() => {
+          this.props.updatePlace(match.params.id, { info: this.state.infoEditorValue });
+          this.setState({
+            showInfoEditor: false
+          })
+        }}>Save</button>
+        <button className="btn btn-danger" onClick={() => this.setState({ showInfoEditor: false })}>Cancel</button>
+      </div>
+    )
+  }
+
   uploadImage(event) {
     const { match } = this.props;
     const placeId = match.params.id;
     const file = event.target.files[0];
-
     storage.ref(placeId).put(file).then(() => this.setImageUrl());
   }
 
   render() {
     const { place, match } = this.props;
+    const MapWithAMarker = withGoogleMap(props =>
+      <GoogleMap
+        defaultZoom={15}
+        defaultCenter={this.state.latlng}
+      >
+        <Marker
+          position={this.state.latlng}
+        />
+      </GoogleMap>
+    );
     const imgStyle = {
       width: '350px',
       height: '350px',
+      marginLeft: "-15px",
     };
     return (
       <div>
@@ -75,24 +162,21 @@ class PlaceDetail extends Component {
             <div className="col-sm-7">
               <PlaceCard>
                 {(
-                  this.state.showNameEditor ?
-                    <div>
-                      <input
-                        className="form-control" 
-                        type="text" 
-                        value={this.state.nameEditorValue} 
-                        onChange={(event) => this.setState({ nameEditorValue: event.target.value })} />
-                      <button className="btn btn-success" onClick={() => {
-                        this.props.updatePlace(match.params.id, { name: this.state.nameEditorValue });
-                        this.setState({
-                          showNameEditor: false
-                        })
-                      }}>Save</button>
-                      <button className="btn btn-danger" onClick={() => this.setState({ showNameEditor: false })}>Cancel</button>
-                    </div> :
-                    <h1 className="post-title" onClick={() => this.setState({ showNameEditor: true })}>{place.name}</h1>
+                  this.state.showNameEditor ? 
+                  this.nameChanged() : 
+                  <h1 className="post-title" onClick={() => 
+                    this.setState({showNameEditor: true })}>
+                    {place.name}
+                  </h1>
                 )}
-                <p className="post-body">{place.address}</p>
+                {(
+                  this.state.showAddressEditor ? 
+                  this.addressChanged() : 
+                  <p className="post-body" onClick={() => 
+                    this.setState({showAddressEditor: true })}>
+                    {place.address}
+                  </p>
+                )}
                 <div className="row">
                   <div className="col-sm-6">
                     <img alt="" src={this.state.imageUrl} id="image" style={imgStyle} />
@@ -105,15 +189,22 @@ class PlaceDetail extends Component {
                     </div>
                   </div>
                   <div className="col-sm-6">
-                    <div className="post-body">
-                      <h4>Information about this place:</h4>
-                      {place.info}
+                  <h4>Information about this place:</h4>
+                  {(
+                    this.state.showInfoEditor ? 
+                    this.infoChanged() : 
+                    <div className="post-body" onClick={() => 
+                      this.setState({showInfoEditor: true })}>
+                        {place.info}
                     </div>
+                  )}
                   </div>
                 </div>
               </PlaceCard>
-
-
+              <MapWithAMarker
+                containerElement={<div style={{ height: `400px` }} />}
+                mapElement={<div style={{ height: `100%` }} />}
+              />
 
 
             </div>

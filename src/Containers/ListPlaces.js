@@ -10,7 +10,6 @@ import Link from 'react-router-dom/es/Link';
 class App extends Component {
   getRating(place) {
     const count = _.size(place.comments);
-
     return count ?
       Math.round(_.reduce(place.comments, (acc, value) => acc + +value.rating, 0) / count) :
       '-';
