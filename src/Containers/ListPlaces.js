@@ -53,28 +53,32 @@ class App extends Component {
       <div>
         <div className="navbar"></div>
         <div className="container">
-          <button className="btn btn-danger signOut" onClick={() => { this.props.logout(); }}>Sign out</button>
-          <div className="navbar">
-            <form onSubmit={handleSubmit(this.onSubmit.bind(this))} className="headerForm">
-              <Field
-                name="name"
-                component={this.renderField}
-                label="Name"
-                class="header-title"
-              />
-              <Field
-                name="address"
-                component={this.renderField}
-                label="Address"
-                class="header-body"
-              />
-              <button type="submit" className="btn header-button btn-info">Add New</button>
-            </form>
+          <div className='row menu'>
+            <button className="btn btn-danger signOut col-sm-2" onClick={() => { this.props.logout(); }}>Sign out</button>
+            <div className="navbar col-sm-10">
+              <form onSubmit={handleSubmit(this.onSubmit.bind(this))} className="container">
+              <div className='row form-control'>
+                <Field
+                  name="name"
+                  component={this.renderField}
+                  label="Name"
+                  class="header-title col-sm-3"
+                />
+                <Field
+                  name="address"
+                  component={this.renderField}
+                  label="Address"
+                  class="header-body col-sm-6"
+                />
+                <button type="submit" className="btn header-button btn-info col-sm-2">Add New</button>
+              </div>
+              </form>
+            </div>
           </div>
-          <div className="main">
-            {this.renderPlaces()}
+            <div className="main">
+              {this.renderPlaces()}
+            </div>
           </div>
-        </div>
       </div>
     );
   }

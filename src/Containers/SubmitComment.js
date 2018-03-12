@@ -8,8 +8,8 @@ class SubmitComment extends Component {
   commentName(field) {
     const { meta: touched, error } = field;
     return (
-      <div>
-        <input type="text" placeholder="Enter your name:" className="form-control inputName" style={touched && error ? errStyle : null} {...field.input} />
+      <div className='col-sm-8 inputName'>
+        <input type="text" placeholder="Enter your name:" className="form-control" style={touched && error ? errStyle : null} {...field.input} />
       </div>
     );
   }
@@ -24,9 +24,9 @@ class SubmitComment extends Component {
   commentRating(field) {
     const { meta: touched, error } = field;
     return (
-      <div className="float-right">
+      <div className="col-sm-4">
         <select className="form-control" style={touched && error ? errStyle : null} {...field.input} >
-          <option>Choose rating</option>
+          <option>Rating</option>
           <option value="1">1</option>
           <option value="2">2</option>
           <option value="3">3</option>
@@ -50,23 +50,28 @@ class SubmitComment extends Component {
     const { handleSubmit } = this.props;
     return (
       <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+        
+        <div className="container">
         <h3>Your comments</h3>
-        <Field
-          name="rating"
-          component={this.commentRating}
-          validate={required}
-        />
-        <Field
-          name="name"
-          component={this.commentName}
-          validate={required}
-        />
+          <div className="row">
+            <Field
+              name="name"
+              component={this.commentName}
+              validate={required}
+            />
+            <Field
+              name="rating"
+              component={this.commentRating}
+              validate={required}
+            />
+          </div>
         <Field
           name="comment"
           component={this.commentArea}
           validate={required}
         />
         <button type="submit" className="btn btn-info btn-small mt-1">Send</button>
+        </div>
       </form>
     );
   }

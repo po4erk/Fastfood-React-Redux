@@ -1,34 +1,28 @@
 .header-title {
   height: 40px ;
-  width: 30% ;
   padding: 1rem 1rem ;
+  margin-bottom: 5px;
   margin-right: 5px;
-  margin-left: 5px;
 }
 
 .header-button {
-  margin-left: 5px;
   height: 43px;
-  width: 17%;
   border-radius: 5px;
   background-color: #2D7DD2;
   color: whitesmoke;
 }
+.menu{
+  margin: 0 auto;
+}
+.gohome-button{
+  height: 43px;
+}
 
 .header-body {
   height: 40px ;
-  width: 50% ;
   padding: 1rem 1rem ;
-  margin-right: 5px;
-}
-
-.headerForm{
-  width: 70%;
-  margin: auto;
-  margin-top: -55px;
-  background: #fff;
-  border-radius: 5px;
-  padding: 2px;
+  margin-right: 45px;
+  margin-bottom: 5px;
 }
 
 .post {
@@ -59,7 +53,7 @@ button{
 }
 
 .inputName{
-  width: 300px;
+  margin-bottom: 5px; 
 }
 
 .commentText{
@@ -71,7 +65,7 @@ button{
 }
 
 .signOut{
-  margin-top: 15px; 
+  margin-top: 18px;
   height: 45px;
 }
 
@@ -91,4 +85,8 @@ button{
 .addressDetail{
   position: relative;
   z-index: 9999;
+}
+
+.place-info{
+  word-wrap: break-word;
 }

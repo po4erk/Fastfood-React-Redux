@@ -149,25 +149,27 @@ class PlaceDetail extends Component {
     };
     return (
       <div>
-        <div className="container-fluid">
+        <div className="container">
           <div className="row">
             <div className="col-sm-7">
               <PlaceCard>
-              <Link to="/" className="btn btn-primary float-right">
-                Go home
-              </Link>
+              <div className='row'>
                 {(
                   this.state.showNameEditor ? 
                   this.nameChanged() : 
-                  <h1 className="post-title" onClick={() => 
+                  <h1 className="place-title col-sm-10" onClick={() => 
                     this.setState({showNameEditor: true })}>
                     {place.name}
                   </h1>
                 )}
+                <Link to="/" className="btn btn-primary col-sm-2 gohome-button">
+                  Go home
+                </Link>
+              </div>
                 {(
                   this.state.showAddressEditor ? 
                   this.addressChanged() : 
-                  <p className="post-body" onClick={() => 
+                  <p className="place-address" onClick={() => 
                     this.setState({showAddressEditor: true })}>
                     {place.address}
                   </p>
@@ -187,7 +189,7 @@ class PlaceDetail extends Component {
                   {(
                     this.state.showInfoEditor ? 
                     this.infoChanged() : 
-                    <div className="post-body" onClick={() => 
+                    <div className="place-info" onClick={() => 
                       this.setState({showInfoEditor: true })}>
                       <h4>Information about this place:</h4>
                         {place.info}
@@ -197,7 +199,7 @@ class PlaceDetail extends Component {
                 </div>
               </PlaceCard>
               <MapWithAMarker
-                containerElement={<div style={{ height: `400px` }} />}
+                containerElement={<div style={{ height: `600px` }} />}
                 mapElement={<div style={{ height: `100%` }} />}
               />
             </div>
