@@ -153,19 +153,19 @@ class PlaceDetail extends Component {
           <div className="row">
             <div className="col-sm-7">
               <PlaceCard>
-              <div className='row'>
-                {(
-                  this.state.showNameEditor ? 
-                  this.nameChanged() : 
-                  <h1 className="place-title col-sm-10" onClick={() => 
-                    this.setState({showNameEditor: true })}>
-                    {place.name}
-                  </h1>
-                )}
-                <Link to="/" className="btn btn-primary col-sm-2 gohome-button">
-                  Go home
-                </Link>
-              </div>
+                <div className='row'>
+                  {(
+                    this.state.showNameEditor ? 
+                    this.nameChanged() : 
+                    <h1 className="place-title col-sm-10" onClick={() => 
+                      this.setState({showNameEditor: true })}>
+                      {place.name}
+                    </h1>
+                  )}
+                  <Link to="/" className="btn btn-primary col-sm-2 gohome-button">
+                    Go home
+                  </Link>
+                </div>
                 {(
                   this.state.showAddressEditor ? 
                   this.addressChanged() : 
