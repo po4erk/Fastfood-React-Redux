@@ -54,7 +54,7 @@ class App extends Component {
         <div className="navbar"></div>
         <div className="container">
           <div className='row menu'>
-            <button className="btn btn-danger signOut col-sm-2" onClick={() => { this.props.logout(); }}>Sign out</button>
+            
             <div className="navbar col-sm-10">
               <form onSubmit={handleSubmit(this.onSubmit.bind(this))} className="container">
               <div className='row form-control'>
@@ -74,6 +74,7 @@ class App extends Component {
               </div>
               </form>
             </div>
+            <button className="btn btn-danger signOut col-sm-2" onClick={() => { this.props.logout(); }}>Sign out</button>
           </div>
             <div className="main">
               {this.renderPlaces()}

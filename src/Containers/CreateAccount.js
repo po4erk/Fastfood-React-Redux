@@ -73,7 +73,7 @@ class CreateAccount extends Component {
           <InputLoginField
             id="confirm-password"
             type="password"
-            label="Confirm Password"
+            label="Confirm password"
             inputAction={event => this.setState({ confirmPassword: event.target.value })}
             style={this.state.error ? errStyle : null}
           />

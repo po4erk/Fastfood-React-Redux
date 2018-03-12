@@ -15,6 +15,7 @@
   margin: 0 auto;
 }
 .gohome-button{
+  padding-top:10px;
   height: 43px;
 }
 
@@ -73,6 +74,11 @@ button{
   width: 80%;
 }
 
+.inputTitle{
+  width: 480px;
+  margin-right: 39px;
+}
+
 .buttonDetail{
   margin-top: 5px;
   margin-right: 5px;
@@ -89,4 +95,12 @@ button{
 
 .place-info{
   word-wrap: break-word;
+}
+
+.Login{
+  margin-top: 50px;
+}
+
+.social{
+  padding-left: 110px;
 }

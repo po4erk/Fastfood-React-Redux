@@ -72,7 +72,7 @@ class PlaceDetail extends Component {
     return(
       <div>
         <input
-          className="form-control inputDetail" 
+          className="form-control inputDetail inputTitle" 
           type="text" 
           value={this.state.nameEditorValue} 
           onChange={(event) => this.setState({ nameEditorValue: event.target.value })} />
@@ -175,7 +175,7 @@ class PlaceDetail extends Component {
                   </p>
                 )}
                 <div className="row">
-                  <div className="col-sm-6">
+                  <div className="col-sm-7">
                     <img alt="" src={this.state.imageUrl} id="image" style={imgStyle} />
                     <div className="form-group row">
                       <input
@@ -185,7 +185,7 @@ class PlaceDetail extends Component {
                       />
                     </div>
                   </div>
-                  <div className="col-sm-6">
+                  <div className="col-sm-5">
                   {(
                     this.state.showInfoEditor ? 
                     this.infoChanged() : 

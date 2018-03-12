@@ -6,11 +6,11 @@ const FormButton = (props) => {
     submitLabel, otherLabel, goToLink, history,
   } = props;
   return (
-    <div className="d-flex justify-content-between">
-      <button type="submit" className="btn btn-primary">{submitLabel}</button>
+    <div className="container">
+      <button type="submit" className="btn btn-primary col-sm-12 mt-1">{submitLabel}</button>
       <button
         type="button"
-        className="btn btn-info"
+        className="btn btn-info col-sm-12 mt-1"
         onClick={() => {
         history.push(goToLink);
       }}

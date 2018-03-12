@@ -4,9 +4,9 @@ import '../Styles/bootstrap-social.css';
 const SocialMediaLogin = (props) => {
   const { googleLogin } = props;
   return (
-    <div className="d-flex justify-content-between mt-1">
-      <button type="button" className="btn btn-social btn-google" onClick={googleLogin}>
-        <span className="fa fa-google" /> Sign in with Google
+    <div className="container mt-1">
+      <button type="button" className="btn btn-social btn-google col-sm-12" onClick={googleLogin}>
+        <span className="fa fa-google" /> <span className='social'>Sign in with Google</span>
       </button>
     </div>
   );
