@@ -1,5 +1,4 @@
-import { database } from '../Firebase';
-import { storage } from '../Firebase';
+import { database, storage } from '../Firebase';
 
 export const FETCH_PLACES = 'fetch_places';
 export const PLACE_STATUS = 'place_status';
@@ -9,7 +8,7 @@ export function getPlaces() {
   return (dispatch) => {
     dispatch({
       type: PLACE_STATUS,
-      payload: true,
+      payload: 1,
     });
     database.on('value', (snapshot) => {
       dispatch({
@@ -18,7 +17,7 @@ export function getPlaces() {
       });
       dispatch({
         type: PLACE_STATUS,
-        payload: false,
+        payload: 0,
       });
     }, () => {
       dispatch({
